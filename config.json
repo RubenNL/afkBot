@@ -1,0 +1,13 @@
+{
+    "host": "minecraft.host",
+    "username": "username",
+    "password": "",
+    "messagesOnJoin":["/su","/afk"],
+    "version":"1.15.2",
+    "hopInMinecart":false,
+    "activateButton":false,
+    "activateLever":false,
+    "maxConnectAttempts":3,
+    "reconnectDelay":{"hours":0,"minutes":1,"seconds":0},
+    "maxTime":{"hours":0,"minutes":0,"seconds":0}
+}
