@@ -4,7 +4,6 @@
     "password": "",
     "messagesOnJoin":["/su","/afk"],
     "version":"1.15.2",
-    "hopInMinecart":false,
     "activateButton":false,
     "activateLever":false,
     "maxConnectAttempts":3,

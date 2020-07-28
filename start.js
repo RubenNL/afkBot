@@ -13,55 +13,12 @@ var bot
 var moveTimeout
 function connect() {
 	bot= mc.createBot(botConfig);
-	bot.world="lobby"
-	bot.on('spawn',()=>{
-	if(bot.world=="afkWorld") return;
-		bot.world="afkWorld"
-		loginTime=new Date
-		console.log('logged in!',loginTime.toTimeString());
-		botConfig.messagesOnJoin.forEach(bot.chat);
-	})
-	moveTimeout=setTimeout(()=>{});
-	bot.on('chat',(username,message)=>console.log((new Date).toTimeString(),'CHAT MESSAGE',username,':',message));
-	bot.on('forcedMove',()=>{
-		clearTimeout(moveTimeout)
-		moveTimeout=setTimeout(()=>{
-			if(botConfig.hopInMinecart) {
-				minecarts=Object.values(bot.entities).filter(entity=>{
-					distance=bot.entity.position.distanceTo(entity.position);
-					console.log(entity.objectType,entity.position,distance);
-					return entity.objectType=='Minecart' && distance<5
-				})
-				if(minecarts.length==0) console.log("NO MINECARTS FOUND!")
-				else if(minecarts.length>1) console.log("MORE THAN 1 MINECART FOUND! NOT HOPPING IN!")
-				else bot.mount(minecarts[0])
-			}
-			if(botConfig.activateButton) {
-				button=bot.findBlock({matching:(block)=>block.name.includes('button')})
-				if(!button) console.log("NO BUTTON FOUND!");
-				else bot.activateBlock(button);
-			}
-			if(botConfig.activateLever) {
-				lever=bot.findBlock({matching:block=>block.name=="lever"})
-				if(!lever) console.log("NO LEVER FOUND!");
-				else bot.activateBlock(lever);
-			}
-		},5000)
-	})
-	bot.on('health',()=>{
-		if(((new Date)-loginTime)<10000) {
-			console.log('HEALTH CHANGE, JUST JOINED');
-			return
-		}
-		console.log("HEALTH CHANGED! ITS NOW",bot.health,"FOOD:",bot.food)
-		if(bot.food<20) eat();
-		if(bot.health>4) return;
-		bot.chat("AFK session end, health is below 4. disconnecting!")
-		botConfig.maxConnectAttempts=0;
-		bot.quit()
-	})
+	bot.loadPlugins(['autoEat.js','autoLeaveLowHealth.js','clickBlockOnJoin.js','sendOnJoin.js','showChat.js'].map(line=>'./plugins/'+line).map(require))
 	bot.on('kicked',(reason,loggedIn)=>{
 		console.log('GOT KICKED WHILE',loggedIn?'CONNECTED':'LOGGING IN',reason)
+	})
+	bot.on('spawn',()=>{
+		loginTime=new Date
 	})
 	bot.on('end',()=>{
 		clearInterval(displayInterval)
@@ -93,16 +50,6 @@ function connect() {
 
 }
 connect();
-function eat () {
-	bot.equip(mcData.itemsByName.cooked_beef.id, 'hand', (err) => {
-		if (err) {
-			console.log("LOOKS LIKE I HAVE RUN OUT OF FOOD! err:",err,"health:",bot.health,"food level:",bot.food)
-			return;
-		}
-
-		bot.consume(err=>console.log("CONSUME ERR:",err))
-	})
-}
 function logMillis(millis) {
 	seconds=Math.floor(millis/1000);
 	minutes=Math.floor(seconds/60);
