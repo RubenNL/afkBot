@@ -14,7 +14,7 @@ var moveTimeout
 function connect() {
 	loginTime=new Date
 	bot= mc.createBot(botConfig);
-	bot.loadPlugins(['autoEat.js','autoLeaveLowHealth.js','clickBlockOnJoin.js','sendOnJoin.js','showChat.js'].map(line=>'./plugins/'+line).map(require))
+	bot.loadPlugins(['autoEat.js','autoLeaveLowHealth.js','clickBlockOnJoin.js','sendOnJoin.js','showChat.js','TPSLogger.js'].map(line=>'./plugins/'+line).map(require))
 	bot.on('kicked',(reason,loggedIn)=>{
 		console.log('GOT KICKED WHILE',loggedIn?'CONNECTED':'LOGGING IN',reason)
 	})
