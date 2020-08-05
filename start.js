@@ -12,13 +12,11 @@ var loginTime
 var bot
 var moveTimeout
 function connect() {
+	loginTime=new Date
 	bot= mc.createBot(botConfig);
 	bot.loadPlugins(['autoEat.js','autoLeaveLowHealth.js','clickBlockOnJoin.js','sendOnJoin.js','showChat.js'].map(line=>'./plugins/'+line).map(require))
 	bot.on('kicked',(reason,loggedIn)=>{
 		console.log('GOT KICKED WHILE',loggedIn?'CONNECTED':'LOGGING IN',reason)
-	})
-	bot.on('spawn',()=>{
-		loginTime=new Date
 	})
 	bot.on('end',()=>{
 		clearInterval(displayInterval)
@@ -40,14 +38,12 @@ function connect() {
 			console.log('player:',bot.entity.position);
 			console.log('vehicle:',bot.vehicle?bot.vehicle.position:null);
 			console.log('health:',bot.health,'food:',bot.food);
-			if(bot.food<20) eat();
 			if((timeDone+(new Date-loginTime))<botConfig.maxTime) return;
 			botConfig.maxConnectAttempts=0;
 			bot.chat('End of AFK session, paid time ended!');
 			bot.quit();
 		},5000)
 	})
-
 }
 connect();
 function logMillis(millis) {
@@ -66,3 +62,4 @@ process.on('SIGINT', function() {
 	bot.quit();
 	setTimeout(process.exit,500);
 })
+
