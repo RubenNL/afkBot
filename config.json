@@ -4,8 +4,8 @@
     "password": "",
     "messagesOnJoin":["/su","/afk"],
     "version":"1.15.2",
-    "activateButton":false,
-    "activateLever":false,
+    "blockName":"button",
+    "blockExact":false,
     "maxConnectAttempts":3,
     "reconnectDelay":{"hours":0,"minutes":1,"seconds":0},
     "maxTime":{"hours":0,"minutes":0,"seconds":0}
