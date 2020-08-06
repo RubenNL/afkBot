@@ -1,4 +1,5 @@
-var mc = require('mineflayer');
+const mc = require('mineflayer');
+const fs=require('fs')
 var botConfig=JSON.parse(require('fs').readFileSync('config.json','utf8'))
 if(botConfig.password=="") delete botConfig.password
 botConfig.reconnectDelay=((botConfig.reconnectDelay.hours*60+botConfig.reconnectDelay.minutes)*60+botConfig.reconnectDelay.seconds)*1000//reconnectDelay in seconds
@@ -14,7 +15,13 @@ var moveTimeout
 function connect() {
 	loginTime=new Date
 	bot= mc.createBot(botConfig);
-	bot.loadPlugins(['autoEat.js','autoLeaveLowHealth.js','clickBlockOnJoin.js','sendOnJoin.js','showChat.js','TPSLogger.js'].map(line=>'./plugins/'+line).map(require))
+	fs.readdir('./plugins', (err, files) => {
+		if(err) {
+			console.log("ERROR READING FILES!",err)
+			process.exit();
+		}
+		bot.loadPlugins(files.map(name=>'./plugins/'+name).map(require))
+	});
 	bot.on('kicked',(reason,loggedIn)=>{
 		console.log('GOT KICKED WHILE',loggedIn?'CONNECTED':'LOGGING IN',reason)
 	})
