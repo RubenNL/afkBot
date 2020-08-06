@@ -23,5 +23,5 @@ module.exports=(bot,options)=>{
 	bot.on('end',()=>{
 		clearInterval(interval)
 		console.log('AVERAGE TPS SINCE LAST JOIN:',savedTPS.reduce((a, b) => a + b, 0) / savedTPS.length);
-	)
+	})
 }
