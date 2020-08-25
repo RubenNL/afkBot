@@ -4,7 +4,7 @@ module.exports=(bot,options)=>{
 	bot.on('health',()=>{
 		if(((new Date)-loginTime)<10000) return;
 		if(bot.food==20) return;
-		bot.equip(mcData.itemsByName.cooked_beef.id, 'hand', (err) => {
+		bot.equip(bot.mcData.itemsByName.cooked_beef.id, 'hand', (err) => {
 			if (err) {
 				console.log("LOOKS LIKE I HAVE RUN OUT OF FOOD! err:",err,"health:",bot.health,"food level:",bot.food)
 				return;

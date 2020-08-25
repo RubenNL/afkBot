@@ -15,6 +15,7 @@ var moveTimeout
 function connect() {
 	loginTime=new Date
 	bot= mc.createBot(botConfig);
+	bot.mcData=mcData
 	fs.readdir('./plugins', (err, files) => {
 		if(err) {
 			console.log("ERROR READING FILES!",err)
