@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mineflayer": "^2.32.0"
+    "mineflayer": "^4.5.1"
   }
 }
